@@ -1,0 +1,6 @@
+##Jwt配置
+#lyh:
+#  jwt:
+#    secret-key: 147qaz852 # 密钥
+#    expire-time: 36000000 # 过期时间（单位：毫秒）
+##    token-head: token # 保存token的字段名称

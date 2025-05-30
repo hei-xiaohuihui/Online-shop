@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyh.onlineShop.productAndCategory.mapper.ProductMapper">
+    <insert id="addProduct">
+        insert into online_shop_product(name, price, category_id, description, image, stock, status) values
+            (#{name}, #{price}, #{categoryId}, #{description}, #{image}, #{stock}, #{status})
+    </insert>
+
+    <update id="updateProductByCondition">
+        update online_shop_product
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                category_id = #{categoryId},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="stock != null">
+                stock = #{stock},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateProductStatus">
+        update online_shop_product
+        set status = #{newStatus}, update_time = now()
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateProductStock">
+        update online_shop_product
+        set stock = #{stock}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProduct">
+        delete from online_shop_product where id = #{id}
+    </delete>
+
+    <select id="selectByName" resultType="com.lyh.onlineShop.common.entity.Product">
+        select * from online_shop_product where name = #{name}
+    </select>
+
+    <select id="selectById" resultType="com.lyh.onlineShop.common.entity.Product">
+        select * from online_shop_product where id = #{id}
+    </select>
+
+    <select id="selectByConditionForAdmin" resultType="com.lyh.onlineShop.common.entity.Product">
+        select * from online_shop_product
+        <where>
+            <if test="name != null">
+                name like concat('%', #{name}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <select id="selectByConditionForUser" resultType="com.lyh.onlineShop.common.entity.Product">
+        select * from online_shop_product
+        <where>
+            status = 1
+            <if test="name != null">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryIds != null">
+                and category_id in
+                <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+                    #{categoryId}
+                </foreach>
+            </if>
+
+        </where>
+        order by update_time desc
+    </select>
+</mapper>

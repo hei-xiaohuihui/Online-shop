@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # 用户服务模块
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/api/auth/** # 将所有访问/api/user/**的请求转发到service-user服务
+          filters:
+            - StripPrefix=1 # 去除请求的URL路径中的第一层级路径前缀（此处为去除/api）
+
+        # 商品服务模块
+        - id: service-product-category
+          uri: lb://service-product-category
+          predicates:
+            - Path=/api/{userType:admin|user}/{serviceType:product|category}/**
+          filters:
+            - StripPrefix=1
+
+        # 购物车订单模块
+        - id: service-cart-order
+          uri: lb://service-cart-order
+          predicates:
+            - Path=/api/{userType:admin|user}/{serviceType:cart|order}/**
+          filters:
+            - StripPrefix=1

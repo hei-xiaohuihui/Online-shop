@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyh.onlineShop.cartAndOrder.mapper.OrderMapper">
+
+    <insert id="addOrder">
+        insert into online_shop_order(order_num, user_id, total_price, consignee, phone, address)
+        values(#{orderNum}, #{userId}, #{totalPrice}, #{consignee}, #{phone}, #{address})
+    </insert>
+
+    <update id="updateOrderStatus">
+        update online_shop_order
+        <set>
+            status = #{status}
+            <if test="cancelTime != null">
+                , cancel_time = #{cancelTime}
+            </if>
+            <if test="cancelReason != null and cancelReason != ''">
+                , cancel_reason = #{cancelReason}
+            </if>
+            <if test="updateTime != null">
+                , update_time = #{updateTime}
+            </if>
+            <if test="payTime != null">
+                , pay_time = #{payTime}
+            </if>
+            <if test="payMethod != null">
+                , pay_method = #{payMethod}
+            </if>
+            <if test="deliveryTime != null">
+                , delivery_time = #{deliveryTime}
+            </if>
+            <if test="completeTime != null">
+                , complete_time = #{completeTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectByOrderNum" resultType="com.lyh.onlineShop.common.entity.Order">
+        select * from online_shop_order where order_num = #{orderNum}
+    </select>
+
+    <select id="selectByCondition" resultType="com.lyh.onlineShop.common.entity.Order">
+        select * from online_shop_order
+        <where>
+            <if test="orderNum != null and orderNum != ''">
+                order_num like concat('%', #{orderNum}, '%')
+            </if>
+            <if test="consignee != null and consignee != ''">
+                and consignee like concat('%', #{consignee}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="address != null and address != ''">
+                and address like concat('%', #{address}, '%')
+           </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="payMethod != null">
+                and pay_method = #{payMethod}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByConditionForUser" resultType="com.lyh.onlineShop.common.entity.Order">
+        SELECT * FROM online_shop_order
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="dto.orderNum != null and dto.orderNum != ''">
+                AND order_num LIKE CONCAT('%', #{dto.orderNum}, '%')
+            </if>
+            <if test="dto.consignee != null and dto.consignee != ''">
+                AND consignee LIKE CONCAT('%', #{dto.consignee}, '%')
+            </if>
+            <if test="dto.phone != null and dto.phone != ''">
+                AND phone LIKE CONCAT('%', #{dto.phone}, '%')
+            </if>
+            <if test="dto.address != null and dto.address != ''">
+                AND address LIKE CONCAT('%', #{dto.address}, '%')
+            </if>
+            <if test="dto.status != null">
+                AND status = #{dto.status}
+            </if>
+            <if test="dto.payMethod != null">
+                AND pay_method = #{dto.payMethod}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

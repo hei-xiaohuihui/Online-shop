@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: service-user # Spring应用名
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1/online_shop
+    username: shopAdmin
+    password: qaz741852
+  # Nacos配置
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml # 指定xml映射文件的位置
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 开启sql打印
+
+logging:
+  level:
+    com.lyh.online_shop.user.mapper: debug # 设置mapper包下的日志级别为debug（会在控制台打印执行的sql语句）
+
+#Jwt配置
+lyh:
+  jwt:
+    secret-key: 147qaz8522434d/*safjiweir47891!qwexuzigeuiib # 密钥
+    expire-time: 36000000 # 过期时间（单位：毫秒）
+
+server:
+  port: 9001

@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: service-product-category
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  # MySQl
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1/online_shop
+    username: shopAdmin
+    password: qaz741852
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB # 单个文件最大大小
+      max-request-size: 10MB # 单次请求的最大大小
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开启sql打印
+
+# 设置日志级别
+logging:
+  level:
+    com.lyh.onlineShop.product.mapper: debug
+
+lyh:
+  # 文件上传相关配置
+  file:
+    # 图片上传相关配置
+    image:
+#      ip: 127.0.0.1
+      path: D:\\Intellij Idea Project\\online-shop\\online-shop-microservice\\services\\service-product-category\\src\\main\\resources\\images\\
+
+server:
+  port: 9002

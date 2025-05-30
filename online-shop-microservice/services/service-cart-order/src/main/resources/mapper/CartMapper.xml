@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyh.onlineShop.cartAndOrder.mapper.CartMapper">
+    <insert id="addCart">
+        insert into online_shop_cart(user_id, product_id, quantity, selected) values
+        (#{userId}, #{productId}, #{quantity}, #{selected})
+    </insert>
+
+    <update id="updateCartByCondition">
+        update online_shop_cart
+        <set>
+            <if test="quantity != null and quantity != ''">
+                quantity = #{quantity},
+            </if>
+            <if test="selected != null">
+                selected = #{selected},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where user_id = #{userId} and product_id = #{productId}
+    </update>
+
+    <update id="updateCartStatus">
+        update online_shop_cart
+        set selected = #{selected}
+        <where>
+            user_id = #{userId}
+            <if test="productIds != null">
+                and product_id in
+                <foreach collection="productIds" item="productId" open="(" close=")" separator=",">
+                    #{productId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteCart">
+        delete from online_shop_cart where id = #{id}
+    </delete>
+
+    <select id="selectByUserIdAndProductId" resultType="com.lyh.onlineShop.common.entity.Cart">
+        select * from online_shop_cart where user_id = #{userId} and product_id = #{productId}
+    </select>
+
+    <select id="selectByUserId" resultType="com.lyh.onlineShop.cartAndOrder.vo.CartVo">
+        select c.id as id, c.user_id as userId, c.product_id as productId, c.quantity as quantity, c.selected as selected,
+               p.price as price, p.name as productName,  p.image as productImage
+        from online_shop_cart c left join online_shop_product p
+        on c.product_id = p.id
+        where c.user_id = #{userId} and p.status = 1
+    </select>
+</mapper>

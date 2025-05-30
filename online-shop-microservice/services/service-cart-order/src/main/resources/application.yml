@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: service-cart-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/online_shop
+    username: shopAdmin
+    password: qaz741852
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开启Sql打印
+
+lyh:
+  # 使用雪花算法生成全局唯一id相关配置
+  orderNum:
+    workerId: 1 # 工作机器id
+    dataCenterId: 1 # 数据中心id
+
+server:
+  port: 9003
