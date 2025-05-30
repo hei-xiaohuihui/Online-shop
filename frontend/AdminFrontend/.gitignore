@@ -1,0 +1,31 @@
+# Node.js dependencies
+/node_modules/
+
+# Build output
+/dist/
+/build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite cache
+.vite/
+
+# Optional: IDE/editor files
+.vscode/
+.idea/
+*.iml
+
+# Optional: TypeScript build info files
+*.tsbuildinfo
+
+# Optional: OS generated files
+.DS_Store
+Thumbs.db
